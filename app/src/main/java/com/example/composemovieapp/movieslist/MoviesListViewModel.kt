@@ -14,7 +14,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MoviesListViewModel(val moviesRepository: MoviesRepository) : ViewModel() {
+class MoviesListViewModel(
+    private val moviesRepository: MoviesRepository
+) : ViewModel() {
 
     private val _moviesListUiState = MutableStateFlow(MoviesUiState())
     val moviesListUiState: StateFlow<MoviesUiState> = _moviesListUiState.asStateFlow()
