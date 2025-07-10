@@ -1,11 +1,14 @@
 package com.example.composemovieapp.data
 
 import com.example.composemovieapp.models.MovieModel
+import com.example.composemovieapp.models.transformToMoviesModelList
 
-class MoviesRepository {
+class MoviesRepository(private val movieDbApi: MovieDbApi) {
+
     suspend fun getMovies(): List<MovieModel> {
-        return mockMovieList
+        return movieDbApi.getMovies().transformToMoviesModelList()
     }
+
 }
 
 val mockMovieList = listOf(

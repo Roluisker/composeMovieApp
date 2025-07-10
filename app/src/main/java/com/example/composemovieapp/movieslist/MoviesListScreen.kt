@@ -3,8 +3,6 @@ package com.example.composemovieapp.movieslist
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -55,6 +53,12 @@ fun MoviesListScreen(
                 vertical = 4.dp
             )
     )
+
+    if (movieUiState.showErrorMessage) {
+        MovieError {
+            viewModel.getMovies()
+        }
+    }
 
     /*
     LazyColumn {

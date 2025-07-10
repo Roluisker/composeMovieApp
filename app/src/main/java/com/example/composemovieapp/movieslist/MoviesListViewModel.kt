@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.composemovieapp.data.MoviesRepository
+import com.example.composemovieapp.data.RetrofitClient
 import com.example.composemovieapp.models.MovieModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.net.ConnectException
 
 class MoviesListViewModel(
     private val moviesRepository: MoviesRepository
@@ -25,29 +27,50 @@ class MoviesListViewModel(
         getMovies()
     }
 
-    private fun getMovies() {
+    fun getMovies() {
         viewModelScope.launch {
-            _moviesListUiState.update {
-                it.copy(isLoading = true)
+
+            try {
+
+                _moviesListUiState.update {
+                    it.copy(
+                        isLoading = true,
+                        showErrorMessage = false,
+                    )
+                }
+
+                delay(2000L)
+
+                val movies: List<MovieModel> = moviesRepository.getMovies()
+
+                _moviesListUiState.update { movieUiState ->
+                    movieUiState.copy(
+                        moviesList = movies,
+                        isLoading = false,
+                    )
+                }
+
+            } catch (exception: Exception) {
+                val errorEnum = when {
+                    exception is ConnectException -> "INTERNET FAIL"
+                    else -> "DEFAULT"
+                }
+
+                _moviesListUiState.update {
+                    it.copy(
+                        isLoading = false,
+                        showErrorMessage = true
+                    )
+                }
             }
 
-            delay(2000L)
-
-            val movies: List<MovieModel> = moviesRepository.getMovies()
-
-            _moviesListUiState.update { movieUiState ->
-                movieUiState.copy(
-                    moviesList = movies,
-                    isLoading = false
-                )
-            }
         }
     }
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                MoviesListViewModel(MoviesRepository())
+                MoviesListViewModel(MoviesRepository(RetrofitClient.service))
             }
         }
     }
