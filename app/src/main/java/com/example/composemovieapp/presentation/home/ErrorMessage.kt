@@ -1,4 +1,4 @@
-package com.example.composemovieapp.movieslist
+package com.example.composemovieapp.presentation.home
 
 import androidx.annotation.StringRes
 import com.example.composemovieapp.R

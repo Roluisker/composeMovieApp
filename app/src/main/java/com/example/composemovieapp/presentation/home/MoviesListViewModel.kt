@@ -1,4 +1,4 @@
-package com.example.composemovieapp.movieslist
+package com.example.composemovieapp.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.net.ConnectException
 import java.net.UnknownHostException
 
 class MoviesListViewModel(

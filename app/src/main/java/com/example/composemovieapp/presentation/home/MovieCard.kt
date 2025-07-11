@@ -1,4 +1,4 @@
-package com.example.composemovieapp.movieslist
+package com.example.composemovieapp.presentation.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -26,10 +26,15 @@ import com.example.composemovieapp.models.MovieModel
 @Composable
 fun MovieCard(
     movie: MovieModel, isFavorite: Boolean,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    onMovieClick: (MovieModel) -> Unit
 ) {
-    Card(elevation = CardDefaults.cardElevation(2.dp)) {
-
+    Card(
+        onClick = {
+            onMovieClick(movie)
+        },
+        elevation = CardDefaults.cardElevation(2.dp)
+    ) {
         //var isFavorite by rememberSaveable { mutableStateOf(false) }
 
         Box(modifier = Modifier.fillMaxSize()) {
@@ -64,5 +69,5 @@ fun MovieCard(
     //showSystemUi = true
 )
 fun MoviesCardPreview() {
-    MovieCard(mockMovieList.first(), true, onFavoriteClick = {})
+    MovieCard(mockMovieList.first(), true, onFavoriteClick = {}, onMovieClick = {})
 }

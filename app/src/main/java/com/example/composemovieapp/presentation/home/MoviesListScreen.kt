@@ -1,4 +1,4 @@
-package com.example.composemovieapp.movieslist
+package com.example.composemovieapp.presentation.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,9 +18,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.composemovieapp.models.MovieModel
 
 @Composable
 fun MoviesListScreen(
+    onMovieClick: (MovieModel) -> Unit,
     viewModel: MoviesListViewModel = viewModel(
         factory = MoviesListViewModel.Factory
     )
@@ -44,6 +46,9 @@ fun MoviesListScreen(
                     isFavorite = isFavorite,
                     onFavoriteClick = {
                         isFavorite = !isFavorite
+                    },
+                    onMovieClick = { movieModel ->
+                        onMovieClick(movieModel)
                     })
             }
         },
@@ -79,6 +84,6 @@ fun MoviesListScreen(
 @Composable
 @Preview
 fun MoviesListScreenPreview() {
-    MoviesListScreen()
+    MoviesListScreen(onMovieClick = {})
 }
 
