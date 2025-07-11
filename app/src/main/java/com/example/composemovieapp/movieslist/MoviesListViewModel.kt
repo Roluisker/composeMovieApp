@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.net.ConnectException
+import java.net.UnknownHostException
 
 class MoviesListViewModel(
     private val moviesRepository: MoviesRepository
@@ -35,7 +36,7 @@ class MoviesListViewModel(
                 _moviesListUiState.update {
                     it.copy(
                         isLoading = true,
-                        showErrorMessage = false,
+                        error = null,
                     )
                 }
 
@@ -52,14 +53,14 @@ class MoviesListViewModel(
 
             } catch (exception: Exception) {
                 val errorEnum = when {
-                    exception is ConnectException -> "INTERNET FAIL"
-                    else -> "DEFAULT"
+                    exception is UnknownHostException -> ErrorMessage.INTERNET_CONNECTION
+                    else -> ErrorMessage.DEFAULT
                 }
 
                 _moviesListUiState.update {
                     it.copy(
                         isLoading = false,
-                        showErrorMessage = true
+                        error = errorEnum
                     )
                 }
             }
@@ -79,7 +80,7 @@ class MoviesListViewModel(
 
 data class MoviesUiState(
     val isLoading: Boolean = false,
-    val showErrorMessage: Boolean = false,
+    val error: ErrorMessage? = null,
     val moviesList: List<MovieModel> = emptyList()
 )
 

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ComposeMovieApp</string>
+    <string name="internet_connection_error_message">Ocurrio un error verifica tu conexion a internet</string>
+    <string name="default_error_message_text">Ocurrio un error</string>
 </resources>
