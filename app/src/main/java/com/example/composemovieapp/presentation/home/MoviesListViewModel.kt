@@ -1,13 +1,10 @@
 package com.example.composemovieapp.presentation.home
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.composemovieapp.data.MoviesRepository
-import com.example.composemovieapp.data.RetrofitClient
 import com.example.composemovieapp.models.MovieModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,9 +12,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
+import javax.inject.Inject
 
-class MoviesListViewModel(
-    private val moviesRepository: MoviesRepository
+@HiltViewModel
+class MoviesListViewModel @Inject constructor(
+    private val moviesRepositoryImpl: MoviesRepository
 ) : ViewModel() {
 
     private val _moviesListUiState = MutableStateFlow(MoviesUiState())
@@ -41,7 +40,7 @@ class MoviesListViewModel(
 
                 delay(2000L)
 
-                val movies: List<MovieModel> = moviesRepository.getMovies()
+                val movies: List<MovieModel> = moviesRepositoryImpl.getMovies()
 
                 _moviesListUiState.update { movieUiState ->
                     movieUiState.copy(
@@ -67,13 +66,14 @@ class MoviesListViewModel(
         }
     }
 
+    /*
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                MoviesListViewModel(MoviesRepository(RetrofitClient.service))
+                MoviesListViewModel(MoviesRepositoryImpl(RetrofitClient.service))
             }
         }
-    }
+    }*/
 
 }
 

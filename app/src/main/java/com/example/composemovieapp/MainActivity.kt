@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -23,17 +24,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.composemovieapp.navigation.PrincipalScreenItem
 import com.example.composemovieapp.navigation.Routes
 import com.example.composemovieapp.presentation.detail.DetailsScreen
 import com.example.composemovieapp.presentation.home.MoviesListScreen
 import com.example.composemovieapp.ui.theme.ComposeMovieAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,10 +52,15 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(
                     bottomBar = {
-                        PrincipalNavigationBar(
-                            navController = navController,
-                            currentDestination = currentDestination
-                        )
+                        AnimatedVisibility(
+                            visible = currentDestination?.route
+                                ?.contains(Routes.DetailsScreen) == false
+                        ) {
+                            PrincipalNavigationBar(
+                                navController = navController,
+                                currentDestination = currentDestination
+                            )
+                        }
                     }
                 ) { paddingValues ->
                     NavHost(
@@ -59,7 +70,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(route = Routes.HomeSreen) {
                             MoviesListScreen(onMovieClick = { movieModel ->
-                                navController.navigate(Routes.Detailsscreen)
+                                navController.navigate(Routes.DetailsScreen + "/${movieModel.id}")
                             })
                         }
                         composable(route = Routes.FavoritiesScreen) {
@@ -68,8 +79,14 @@ class MainActivity : ComponentActivity() {
                         composable(route = Routes.NowPLayingScreen) {
 
                         }
-                        composable(route = Routes.Detailsscreen) {
-                            DetailsScreen()
+                        composable(
+                            route = Routes.DetailsScreen + "/{movieId}",
+                            arguments = listOf(navArgument(name = "movieId") {
+                                type = NavType.StringType
+                            })
+                        ) {
+                            val movieId = it.arguments?.getString("movieId")
+                            DetailsScreen(movieId = movieId)
                         }
                     }
                 }
@@ -114,7 +131,9 @@ fun PrincipalNavigationBar(
                 },
                 selected = currentDestination?.route == screen.route,
                 onClick = {
-                    navController.navigate(screen.route)
+                    navController.navigate(screen.route) {
+                        popUpTo(Routes.HomeSreen)
+                    }
                 },
                 icon = {
                     Icon(
