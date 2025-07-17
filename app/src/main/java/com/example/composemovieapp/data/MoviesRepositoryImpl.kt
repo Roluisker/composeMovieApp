@@ -1,7 +1,10 @@
 package com.example.composemovieapp.data
 
+import com.example.composemovieapp.data.remote.MovieDbApi
 import com.example.composemovieapp.models.MovieModel
+import com.example.composemovieapp.models.transformToMovieDetailsModel
 import com.example.composemovieapp.models.transformToMoviesModelList
+import com.example.moviescourseapp.models.details.MovieDetailsModel
 import javax.inject.Inject
 
 class MoviesRepositoryImpl @Inject constructor(
@@ -11,6 +14,10 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override suspend fun getMovies(): List<MovieModel> {
         return movieDbApi.getMovies().transformToMoviesModelList()
+    }
+
+    override suspend fun getMovieDetails(movieId: String): MovieDetailsModel {
+        return movieDbApi.getMovieDetails(movieId).transformToMovieDetailsModel()
     }
 
 }
