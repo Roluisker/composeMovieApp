@@ -86,7 +86,11 @@ class MainActivity : ComponentActivity() {
                             })
                         ) {
                             val movieId = it.arguments?.getString("movieId")
-                            DetailsScreen(movieId = movieId)
+                            DetailsScreen(
+                                movieId = movieId,
+                                onBack = {
+                                    navController.navigateUp()
+                                })
                         }
                     }
                 }

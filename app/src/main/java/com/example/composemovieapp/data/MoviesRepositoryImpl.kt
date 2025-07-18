@@ -4,11 +4,15 @@ import com.example.composemovieapp.data.remote.MovieDbApi
 import com.example.composemovieapp.models.MovieModel
 import com.example.composemovieapp.models.transformToMovieDetailsModel
 import com.example.composemovieapp.models.transformToMoviesModelList
+import com.example.moviescourseapp.data.local.FavoriteMovieDao
+import com.example.moviescourseapp.data.local.FavoriteMovieEntity
 import com.example.moviescourseapp.models.details.MovieDetailsModel
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MoviesRepositoryImpl @Inject constructor(
-    private val movieDbApi: MovieDbApi
+    private val movieDbApi: MovieDbApi,
+    private val movieDao: FavoriteMovieDao
 ) :
     MoviesRepository {
 
@@ -18,6 +22,18 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override suspend fun getMovieDetails(movieId: String): MovieDetailsModel {
         return movieDbApi.getMovieDetails(movieId).transformToMovieDetailsModel()
+    }
+
+    override suspend fun insertMovie(movieEntity: FavoriteMovieEntity) {
+         movieDao.insertMovie(movieEntity = movieEntity)
+    }
+
+    override suspend fun deleteMovie(movieEntity: FavoriteMovieEntity) {
+         movieDao.deleteMovie(movieEntity = movieEntity)
+    }
+
+    override fun getFavoriteMovies(): Flow<List<FavoriteMovieEntity>> {
+        return movieDao.getFavoriteMovies()
     }
 
 }

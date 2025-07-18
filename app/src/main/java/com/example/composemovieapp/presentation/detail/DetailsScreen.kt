@@ -16,7 +16,8 @@ import com.example.composemovieapp.presentation.detail.componets.MovieDetailsCon
 @Composable
 fun DetailsScreen(
     movieId: String?,
-    viewModel: MovieDetailsViewModel = hiltViewModel()
+    viewModel: MovieDetailsViewModel = hiltViewModel(),
+    onBack: () -> Unit
 ) {
 
     val movieDetailsUiState by viewModel.movieDetailsUiState.collectAsState()
@@ -42,7 +43,11 @@ fun DetailsScreen(
         } else {
 
             movieDetailsUiState.movieDetailsModel?.let {
-                MovieDetailsContent(it)
+                MovieDetailsContent(it,
+                    onBack = { onBack() },
+                    onUpdateFavorite = { movieDetailModel ->
+                        viewModel.updateFavorites(movieDetailModel)
+                    })
             }
 
         }

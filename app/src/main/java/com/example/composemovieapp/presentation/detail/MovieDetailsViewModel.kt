@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.composemovieapp.data.MoviesRepository
 import com.example.composemovieapp.presentation.home.ErrorMessage
+import com.example.moviescourseapp.data.local.FavoriteMovieEntity
+import com.example.moviescourseapp.models.details.MovieDetailsModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,11 +35,12 @@ class MovieDetailsViewModel @Inject constructor(
 
             try {
                 val movieDetail = movieRepository.getMovieDetails(movieId = movieId)
-                Log.d("ALOHA", movieDetail.toString())
+
                 _movieDetailsUiState.update {
                     it.copy(isLoading = false, movieDetailsModel = movieDetail)
                 }
-                //getFavoriteMovies()
+
+                getFavoriteMovies()
             } catch (e: Exception) {
                 val error = when (e) {
                     is ConnectException -> ErrorMessage.INTERNET_CONNECTION
@@ -52,19 +55,25 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    /*
+
     fun updateFavorites(movieDetailsModel: MovieDetailsModel) {
-      viewModelScope.launch {
-          if (movieDetailsModel.isMovieInFavorites) {
-              movieRepository.deleteMovie(
-                  FavoriteMovieEntity(movieId = movieDetailsModel.id.toString(), posterPath = movieDetailsModel.posterPath)
-              )
-          } else {
-              movieRepository.insertMovie(
-                  FavoriteMovieEntity(movieId = movieDetailsModel.id.toString(), posterPath = movieDetailsModel.posterPath)
-              )
-          }
-      }
+        viewModelScope.launch {
+            if (movieDetailsModel.isMovieInFavorites) {
+                movieRepository.deleteMovie(
+                    FavoriteMovieEntity(
+                        movieId = movieDetailsModel.id.toString(),
+                        posterPath = movieDetailsModel.posterPath
+                    )
+                )
+            } else {
+                movieRepository.insertMovie(
+                    FavoriteMovieEntity(
+                        movieId = movieDetailsModel.id.toString(),
+                        posterPath = movieDetailsModel.posterPath
+                    )
+                )
+            }
+        }
     }
 
     private fun getFavoriteMovies() {
@@ -83,5 +92,5 @@ class MovieDetailsViewModel @Inject constructor(
                 }
             }
         }
-    }*/
+    }
 }
