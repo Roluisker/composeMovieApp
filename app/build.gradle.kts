@@ -59,6 +59,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
     implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
     implementation("androidx.navigation:navigation-compose:2.9.1")
+    implementation("androidx.compose.material:material-icons-extended-android:1.7.8")
 
     /*
     implementation("com.google.dagger:hilt-android:2.48")

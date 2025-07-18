@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.composemovieapp.presentation.detail.componets.MovieDetailsContent
 
 @Composable
 fun DetailsScreen(
@@ -39,7 +40,11 @@ fun DetailsScreen(
                 modifier = Modifier.align(Alignment.Center)
             )
         } else {
-            Text(text = "Details $movieId")
+
+            movieDetailsUiState.movieDetailsModel?.let {
+                MovieDetailsContent(it)
+            }
+
         }
 
     }
