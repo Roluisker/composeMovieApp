@@ -2,6 +2,7 @@ package com.example.composemovieapp.models
 
 import com.example.composemovieapp.data.MoviesResultResponse
 import com.example.composemovieapp.data.remote.detail.MovieDetailsResponse
+import com.example.moviescourseapp.data.local.FavoriteMovieEntity
 import com.example.moviescourseapp.models.details.MovieDetailsModel
 
 const val BASE_IMAGE_URL = "https://image.tmdb.org/t/p/w500"
@@ -34,7 +35,7 @@ fun MovieDetailsResponse.transformToMovieDetailsModel(): MovieDetailsModel {
     )
 }
 
-/*
+
 fun FavoriteMovieEntity.transformToMovieModel(): MovieModel {
     return MovieModel(
         id = this.movieId.toInt(),
@@ -47,4 +48,4 @@ fun MovieModel.transformToMovieEntity(): FavoriteMovieEntity {
         movieId = this.id.toString(),
         posterPath = this.imageUrl
     )
-} */
+}

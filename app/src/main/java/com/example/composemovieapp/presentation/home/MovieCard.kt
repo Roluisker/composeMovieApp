@@ -25,8 +25,7 @@ import com.example.composemovieapp.models.MovieModel
 
 @Composable
 fun MovieCard(
-    movie: MovieModel, isFavorite: Boolean,
-    onFavoriteClick: () -> Unit,
+    movie: MovieModel,
     onMovieClick: (MovieModel) -> Unit
 ) {
     Card(
@@ -47,6 +46,7 @@ fun MovieCard(
                     .wrapContentHeight()
             )
 
+            /*
             Icon(
                 imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                 contentDescription = null,
@@ -58,7 +58,7 @@ fun MovieCard(
                         onFavoriteClick()
                         //isFavorite = !isFavorite
                     }
-            )
+            )*/
         }
     }
 }
@@ -69,5 +69,5 @@ fun MovieCard(
     //showSystemUi = true
 )
 fun MoviesCardPreview() {
-    MovieCard(mockMovieList.first(), true, onFavoriteClick = {}, onMovieClick = {})
+    MovieCard(mockMovieList.first(), onMovieClick = {})
 }

@@ -42,10 +42,11 @@ fun MoviesListScreen(
                 var isFavorite by rememberSaveable { mutableStateOf(false) }
 
                 MovieCard(movie = movie,
+                    /*
                     isFavorite = isFavorite,
                     onFavoriteClick = {
                         isFavorite = !isFavorite
-                    },
+                    },*/
                     onMovieClick = { movieModel ->
                         onMovieClick(movieModel)
                     })

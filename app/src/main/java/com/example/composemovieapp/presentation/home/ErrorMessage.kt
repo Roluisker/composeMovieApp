@@ -5,5 +5,6 @@ import com.example.composemovieapp.R
 
 enum class ErrorMessage(@StringRes val message: Int) {
     INTERNET_CONNECTION(R.string.internet_connection_error_message),
-    DEFAULT(R.string.default_error_message_text)
+    DEFAULT(R.string.default_error_message_text),
+    DATABASE_ERROR(R.string.database_error_message_text),
 }
